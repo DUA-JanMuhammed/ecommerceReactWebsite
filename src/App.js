@@ -1,7 +1,8 @@
 import './App.css';
-// import { Provider } from "react-redux";
-// import myStore from './redux/store'
+import { Provider } from "react-redux";
+import myStore,{persistor} from './redux/store'
 import AppRouter from './rout/rout';
+import {PersistGate} from "redux-persist/integration/react"
 
 
 
@@ -10,17 +11,11 @@ import AppRouter from './rout/rout';
 function App() {
   return (
     <div className="App">
-
-
-
-
-
-
-      {/* <Provider store={myStore}> */}
+      <Provider store={myStore}>
+      <PersistGate persistor={persistor}>
         <AppRouter />
-
-{/* 
-      </Provider> */}
+    </PersistGate>
+    </Provider>
     </div>
   );
 }

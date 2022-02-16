@@ -12,7 +12,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
 
-export default function Cards(props) {
+
+ function Cards(props) {
 
 const [isShown, setIsShown]= useState(false);
 let pic1 = props.pic
@@ -66,3 +67,7 @@ let newtag = props.new
     </Card>
   );
 }
+
+
+
+export default Cards

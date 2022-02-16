@@ -10,22 +10,34 @@ import { useLocation } from 'react-router'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { useState, useEffect } from 'react';
+import {connect} from "react-redux"
+import {addToCart} from "../redux/shopping/shopping-action"
 
-export default function CardInsideView() {
-  const [CartItems, setCartItems] = useState([])
-  const location = useLocation()
-    
+function CardInsideView(addToCart) {
+   const location = useLocation()
+ 
+  // const AddItemsIntoCart =()=>{
+  // let productsString = localStorage.getItem('items')
+  // let products = []
+  // if(productsString){
+  //     products = JSON.parse(productsString)
+  // } 
+  // products.concat([location.state])
+  // localStorage.setItem('items', JSON.stringify(products))}
+  
+  // const [CartItems, setCartItems] = useState([])
+  // const AddItemsIntoCart =()=>{
+  //   console.log("working")
+  //   setCartItems([...CartItems,location.state]) 
+  //   // setCartItems([...localStorage.getItem("items"),location.state]) 
+  // }
 
-  const AddItemsIntoCart =()=>{
-    console.log("working")
-    setCartItems([...CartItems,location.state]) 
-  }
-  useEffect(()=>{
-    if(CartItems?.length){
+  // useEffect(()=>{
+  //   if(CartItems.length){
 
-      localStorage.setItem("items",JSON.stringify(CartItems))
-    }
-  },[CartItems])
+  //     localStorage.setItem("items",JSON.stringify(CartItems))
+  //   }
+  // },[CartItems])  
 
   return (
     <>
@@ -73,7 +85,7 @@ export default function CardInsideView() {
                 <div className='leftViewSixthSecond'>Availability: In stock</div>
               </div>
               <div className='leftViewSeven'>
-                <Button onClick = {AddItemsIntoCart}className='leftViewSevenBtn' variant="contained">Add to Cart</Button>
+                <Button onClick = {()=>addToCart.addToCart(location.state.id)}className='leftViewSevenBtn' variant="contained">Add to Cart</Button>
               </div>
             </div>
           </Grid>
@@ -84,3 +96,12 @@ export default function CardInsideView() {
     </>
   )
 }
+
+const mapDispatchToProps =(dispatch)=>{
+  return{
+  addToCart : (id)=> dispatch(addToCart(id))
+  }
+
+}
+
+export default connect(null,mapDispatchToProps)(CardInsideView)

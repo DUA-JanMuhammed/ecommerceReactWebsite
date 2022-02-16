@@ -7,10 +7,23 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 // import { Link as LinkRoute} from "react-router-dom";
 import { useNavigate } from "react-router";
 import { Link as LinkRoute} from "react-router-dom";
+import {connect} from "react-redux"
+import {useEffect,useState } from 'react';
 
 
 
-export default function NavFirst() {
+function NavFirst(cartItems) {
+    const [cartCounter,setCartCounter] = useState(0)
+    useEffect(()=>{
+            let count = 0;
+            cartItems.Cart.forEach(item => {
+                count += item.qty 
+            })
+
+          setCartCounter(count)
+          
+        },[cartItems.Cart,cartCounter])
+
     const Navigate = useNavigate()
     const NavigatingTologin =() =>{
       Navigate("/login")
@@ -66,7 +79,8 @@ export default function NavFirst() {
                             <Link className='personIcon' href="#" ><PersonOutlinedIcon /></Link>
                         </div>
                         <div onClick={NavigatingToCartScreen}  className='firstNavIcon'>
-                            <Link component={LinkRoute} to="/CartScreen" className='personIcon' sx={{ paddingLeft: 4 }}  ><LocalMallIcon /></Link>10 items
+                            <Link component={LinkRoute} to="/CartScreen" className='personIcon' sx={{ paddingLeft: 4 }}  ><LocalMallIcon /></Link>
+                            {cartCounter}
                         </div>
                     </div>
                 </div>
@@ -74,3 +88,11 @@ export default function NavFirst() {
         </>
     )
 }
+
+const mapStateToProps =(state)=>{
+    return{
+        Cart:state.shop.cartItems,
+    };
+}
+
+export default connect(mapStateToProps)(NavFirst)

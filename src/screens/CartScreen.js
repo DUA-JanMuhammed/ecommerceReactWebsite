@@ -14,40 +14,50 @@ import Paper from '@mui/material/Paper';
 import Header from '../component/Header'
 import Footer from '../component/Footer1'
 import {  useNavigate } from 'react-router'
-
-// function createData(name, calories, fat, carbs) {
-//   return { name, calories, fat, carbs,  };
-// }
-
-
-// const rows = [
-//   createData('Frozen yoghurt', 159, 6.0, 24, ),
-//   createData('Ice cream sandwich', 237, 9.0, 37),
-//   createData('Eclair', 262, 16.0, 24),
-//   createData('Cupcake', 305, 3.7, 67),
-//   createData('Gingerbread', 356, 16.0, 49),
-// ];
+import {connect} from "react-redux"
+import { useState, useEffect } from 'react';
+import CardsInCart from "../component/CardsInCart"
 
 
-const CartScreen = () => {
+
+
+const CartScreen = (Cart) => {
   
 
-    const [city, setCity] = React.useState('');
+    const [city, setCity] = useState('');
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [totalItem, setTotalItem] = useState(0);
+useEffect(() => {
+  let item = 0
+  let price = 0
+
+  Cart.Cart?.forEach(items => {
+    item += items.qty
+    
+    price += items.qty * items.price
+  })
+  
+  setTotalPrice(price)
+  setTotalItem(item)
+
+
+ 
+}, [Cart.Cart,totalPrice,totalItem,setTotalPrice,setTotalItem])
 
 
     const handleChange = (event) => {
         setCity(event.target.value);
       };
 
-      const getDataFromLocalStorage =()=>{
-        const data = localStorage.getItem("items")
-        if(data){
-          return JSON.parse(data)
-        }else{
-          return []
-        }
-      }
-      let data = getDataFromLocalStorage()
+      // const getDataFromLocalStorage =()=>{
+      //   const data = localStorage.getItem("items")
+      //   if(data){
+      //     return JSON.parse(data)
+      //   }else{
+      //     return []
+      //   }
+      // }
+      // let data = getDataFromLocalStorage()
       // const [items, setItems] = React.useState([]);
       // setItems(data)
       // console.log(getDataFromLocalStorage())
@@ -63,18 +73,28 @@ const CartScreen = () => {
  
           <p className="total-items">
             You have <span className="total-items-count">
-                {/* {totalItem}  */}</span>{" "} items in shopping cart
+                {totalItem}</span>{" "} items in shopping cart
           </p>  <hr/>
     </Box>
 
 <Grid container >
-    <Grid item p={2} md={8} sm ={12}>
+    <Grid item p={2}  md={8} sm ={12}>
     <Box p={3} 
     sx={{ border: '1px Solid #DCDCDC' , backgroundColor:"#F5F5F5"}}>
+<Grid container p={3} spacing={2}>
+            {Cart.Cart?.map((e) => {
+                return (
+                    <>
+                        <Grid item xs={12} md={12}>
+                            <CardsInCart qty={e.qty} pic={e.img1} title={e.title} price={e.price} />
+                        </Grid>
+                    </>
+                )
+            })}
+            </Grid>
 
 
-
-    <TableContainer component={Paper}>
+    {/* <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow  sx={{ textDecoration:"bold" }}>
@@ -85,7 +105,7 @@ const CartScreen = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((row) => (
+          {Cart.Cart?.map((row) => (
             <TableRow
               // key={row.title}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -94,13 +114,13 @@ const CartScreen = () => {
                 {row.title}
               </TableCell>
               <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{1}</TableCell>
+              <TableCell align="right">{row.qty}</TableCell>
               <TableCell align="right">{0}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer> */}
 
 
 
@@ -184,7 +204,7 @@ const CartScreen = () => {
                 Subtotal
                 <span style={{ float: "right" }}>
                   Rs. 
-                  {/* {totalAmount} */}
+                  {totalPrice}
                 </span>
               </p>
             </Box>
@@ -202,7 +222,7 @@ const CartScreen = () => {
               <p style={{ textAlign: "left", fontSize: 18, fontWeight: "bold" }}>
                 Order Total
                 <span style={{ float: "right" }}> Rs. 
-                {/* {totalAmount}  */}
+                {totalPrice?totalPrice+200:totalPrice}
                 </span></p>
 
 
@@ -230,5 +250,11 @@ const CartScreen = () => {
       </>
   )
 }
+const mapStateToProps =(state)=>{
+  return{
+    Cart:state.shop.cartItems
+  };
+}
 
-export default CartScreen
+
+export default connect(mapStateToProps)(CartScreen)

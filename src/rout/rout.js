@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Home, BrandSubMain, Signup, Login,CartScreen, CardInsideView, 
-    Accountinfo, Myaccount, Myorders, MainOrderForm,PageNotFound } from ".";
+    Accountinfo, Myaccount, Myorders, MainOrderForm,PageNotFound,Category } from ".";
 
 
 export default function AppRouter() {
@@ -21,6 +21,8 @@ export default function AppRouter() {
                     <Route path="/mainOrderForm" element={<MainOrderForm />} />
                     <Route path="/CartScreen" element={<CartScreen />} />
                     <Route path="*" element={<PageNotFound />} />
+                    <Route path="Category" element={<Category />} />
+                    
                 </Routes>
             </div>
         </Router>

@@ -9,6 +9,7 @@ import "./homeScreen.css";
 import Header from '../component/Header'
 import Footer from '../component/Footer1'
 import {  useNavigate } from 'react-router'
+import {connect} from "react-redux"
 
 const obj = [
     {
@@ -88,7 +89,7 @@ const Men = [
 
 ]
 
-function HomeScreen() {
+function HomeScreen(products) {
 
     const navigate = useNavigate();
     const viewDetails = (id) =>{
@@ -212,7 +213,7 @@ function HomeScreen() {
         <Container style={{ justifyContent: 'center', alignItems: 'center' }} >
 
             <Grid container p={3} spacing={1}>
-                {obj.map((e) => {
+                {products.products.map((e) => {
                     return (
                         <>
                             <Grid item xs={6} md={3}>
@@ -264,4 +265,10 @@ function HomeScreen() {
     </div>;
 }
 
-export default HomeScreen;
+const mapStateToProps =(state)=>{
+    return{
+        products:state.shop.products,
+    };
+}
+
+export default connect(mapStateToProps)( HomeScreen);

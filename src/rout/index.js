@@ -11,11 +11,13 @@ import Accountinfo from '../screens/Accountinfo'
     import Myorders from '../screens/Myorders';
 import CartScreen from "../screens/CartScreen"
 import PageNotFound from '../screens/PageNotFound';
+import Category  from "../screens/CategoryMain"
 
 
 
 
 
 export { Index, Home, BrandSubMain,Signup,Login,CardInsideView,MainOrderForm,
-    Accountinfo,Myaccount,Myorders,CartScreen,PageNotFound }
+    Accountinfo,Myaccount,Myorders,CartScreen,PageNotFound,
+    Category }
 
